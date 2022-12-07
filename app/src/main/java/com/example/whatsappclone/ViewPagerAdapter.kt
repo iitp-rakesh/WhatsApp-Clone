@@ -1,5 +1,4 @@
-package com.example.whatsappclone
-
+package com.android.application
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
