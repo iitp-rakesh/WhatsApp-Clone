@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.android.application.R
 import com.example.whatsappclone.placeholder.PlaceholderContent
 
 /**
@@ -38,7 +37,7 @@ class CallFragment : Fragment() {
                     columnCount <= 1 -> LinearLayoutManager(context)
                     else -> GridLayoutManager(context, columnCount)
                 }
-                adapter = MyItemRecyclerViewAdapter(PlaceholderContent.ITEMS)
+                adapter = CallFragmentRecyclerViewAdapter(PlaceholderContent.ITEMS)
             }
         }
         return view

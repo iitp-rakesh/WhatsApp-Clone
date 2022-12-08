@@ -134,4 +134,10 @@ class LoginPage : AppCompatActivity() {
         PhoneAuthProvider.verifyPhoneNumber(options)
         Log.d("GFG", "Auth started")
     }
+    override fun onStart() {
+        super.onStart()
+        if (auth.currentUser != null){
+            startActivity(Intent(this , MainActivity::class.java))
+        }
+    }
 }
