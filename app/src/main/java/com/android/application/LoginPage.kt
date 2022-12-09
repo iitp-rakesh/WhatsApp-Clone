@@ -17,7 +17,7 @@ import java.util.concurrent.TimeUnit
 class LoginPage : AppCompatActivity() {
     @SuppressLint("MissingInflatedId")
     private lateinit var auth: FirebaseAuth
-
+    private lateinit var etPhoneNumber: EditText
     // we will use this to match the sent otp from firebase
     lateinit var storedVerificationId: String
     lateinit var resendToken: PhoneAuthProvider.ForceResendingToken
@@ -28,7 +28,7 @@ class LoginPage : AppCompatActivity() {
         setContentView(R.layout.activity_login_page)
         storedVerificationId=""
         val btnSendOTP = findViewById<Button>(R.id.btnSendOTP)
-        val etPhoneNumber = findViewById<EditText>(R.id.etPhoneNumber)
+        etPhoneNumber = findViewById(R.id.etPhoneNumber)
         val etOTP = findViewById<EditText>(R.id.etOTP)
         val btnVerifyOTP = findViewById<Button>(R.id.btnVerifyOTP)
         btnVerifyOTP.visibility = Button.INVISIBLE
@@ -109,7 +109,8 @@ class LoginPage : AppCompatActivity() {
                 if (task.isSuccessful) {
                     // if the sign in is successful we are
                     // starting the profile activity
-                    val intent = Intent(this, MainActivity::class.java)
+                    val intent = Intent(this, SignupDetailActivity::class.java)
+                    intent.putExtra("number", etPhoneNumber.text.toString())
                     intent.flags =
                         Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                     startActivity(intent)
@@ -137,7 +138,10 @@ class LoginPage : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         if (auth.currentUser != null){
-            startActivity(Intent(this , MainActivity::class.java))
+            Toast.makeText(this, "Already Logged In ${auth.currentUser!!.phoneNumber}", Toast.LENGTH_SHORT).show()
+            val intent = Intent(this, MainActivity::class.java)
+            intent.putExtra("number", auth.currentUser!!.phoneNumber)
+            startActivity(intent)
         }
     }
 }

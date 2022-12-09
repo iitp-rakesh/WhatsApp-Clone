@@ -9,7 +9,7 @@ android {
     compileSdk 33
     defaultConfig {
         applicationId "com.android.application"
-        minSdk 21
+        minSdk 23
         targetSdk 33
         versionCode 1
         versionName "1.0"
@@ -43,6 +43,7 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
     implementation 'com.google.firebase:firebase-auth:21.1.0'
+    implementation 'com.google.firebase:firebase-storage-ktx:20.1.0'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.4'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.0'
@@ -54,5 +55,19 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth-ktx'
     implementation 'com.google.firebase:firebase-analytics-ktx'
     implementation 'com.google.firebase:firebase-firestore-ktx'
-//    implementation 'com.github.ZEGOCLOUD:zego_uikit_prebuilt_call_android:'
+    implementation ('org.jitsi.react:jitsi-meet-sdk:+') { transitive = true }
+    implementation 'com.github.ZEGOCLOUD:zego_uikit_prebuilt_call_android:latest.release'
+    // Google Sign In SDK
+    implementation 'com.google.android.gms:play-services-auth:20.4.0'
+
+    // Firebase SDK
+    implementation platform('com.google.firebase:firebase-bom:30.3.2')
+    implementation 'com.google.firebase:firebase-database-ktx'
+    implementation 'com.google.firebase:firebase-storage-ktx'
+    implementation 'com.google.firebase:firebase-auth-ktx'
+
+    // Firebase UI Library
+    implementation 'com.firebaseui:firebase-ui-auth:8.0.1'
+    implementation 'com.firebaseui:firebase-ui-database:8.0.1'
+
 }

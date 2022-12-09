@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.database.Cursor
-import android.net.Uri
 import android.os.Bundle
 import android.provider.ContactsContract
 import android.util.Log
@@ -15,9 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.core.content.contentValuesOf
-import com.example.whatsappclone.placeholder.PlaceholderContent
+import com.android.application.whatsappclone.placeholder.PlaceholderContent
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 /**

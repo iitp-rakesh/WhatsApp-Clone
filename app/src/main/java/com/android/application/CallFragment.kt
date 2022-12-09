@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.whatsappclone.placeholder.PlaceholderContent
+import com.android.application.whatsappclone.placeholder.PlaceholderContent
 
 /**
  * A fragment representing a list of Items.

@@ -1,4 +1,4 @@
-package com.example.whatsappclone.placeholder
+package com.android.application.whatsappclone.placeholder
 
 import java.util.ArrayList
 import java.util.HashMap
