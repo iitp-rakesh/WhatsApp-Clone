@@ -6,19 +6,18 @@
     android:layout_height="match_parent"
     tools:context=".SignupDetailActivity">
 
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/ivChooseProfilePic"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
         android:layout_marginStart="131dp"
-        android:layout_marginTop="94dp"
+        android:layout_marginTop="60dp"
         android:layout_marginEnd="152dp"
-        android:layout_marginBottom="509dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:src="@drawable/ic_baseline_person_24"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.416"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@tools:sample/avatars" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/btnChooseImage"
@@ -27,25 +26,21 @@
         android:layout_marginStart="186dp"
         android:layout_marginTop="55dp"
         android:layout_marginEnd="131dp"
-        android:layout_marginBottom="407dp"
         android:text="Choose Image"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ivChooseProfilePic"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toBottomOf="@+id/ivChooseProfilePic" />
 
     <EditText
         android:id="@+id/etUserName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="62dp"
-        android:layout_marginBottom="299dp"
         android:ems="10"
         android:hint="Name"
         android:inputType="textPersonName"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:minHeight="48dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnChooseImage" />
@@ -55,12 +50,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="165dp"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="92dp"
         android:layout_marginEnd="152dp"
-        android:layout_marginBottom="151dp"
         android:text="Next"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:textColor="#3E2723"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/etUserName" />
 </androidx.constraintlayout.widget.ConstraintLayout>

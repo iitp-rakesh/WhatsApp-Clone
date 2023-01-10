@@ -2,35 +2,31 @@ package com.android.application
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.database.Cursor
 import android.os.Bundle
 import android.provider.ContactsContract
 import android.util.Log
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.android.application.whatsappclone.placeholder.PlaceholderContent
+import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 
 /**
  * A fragment representing a list of Items.
  */
+@Suppress("NAME_SHADOWING")
 class ChatFragment : Fragment() {
 
-    private var columnCount = 1
+    private lateinit var friend: ArrayList<Friend>
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        arguments?.let {
-            columnCount = it.getInt(ARG_COLUMN_COUNT)
-        }
-    }
 
     @SuppressLint("MissingInflatedId")
     override fun onCreateView(
@@ -38,39 +34,34 @@ class ChatFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_chat_list, container, false)
-        // Set the adapter
-        if (view is RecyclerView) {
-            with(view) {
-                layoutManager = when {
-                    columnCount <= 1 -> LinearLayoutManager(context)
-                    else -> GridLayoutManager(context, columnCount)
-                }
-                adapter = ChatFragmentRecyckerViewAdapter(PlaceholderContent.ITEMS)
-            }
-        }
+        val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
+        recyclerView.layoutManager = LinearLayoutManager(view.context)
+        friend = ArrayList()
+        val chatListAdapter = ChatFragmentRecyclerViewAdapter(friend)
+        recyclerView.adapter = chatListAdapter
+        refreshFragment(context!!)
         //Floating New Chat Button
         view.findViewById<FloatingActionButton>(R.id.btnNewChat)
-            .setOnClickListener(View.OnClickListener {
+            .setOnClickListener {
                 val intent = Intent(Intent.ACTION_PICK)
                 intent.type = ContactsContract.CommonDataKinds.Phone.CONTENT_TYPE
                 startActivityForResult(intent, 1)
-            })
-        return view
-    }
-
-    companion object {
-
-        // TODO: Customize parameter argument names
-        const val ARG_COLUMN_COUNT = "column-count"
-
-        // TODO: Customize parameter initialization
-        @JvmStatic
-        fun newInstance(columnCount: Int) =
-            ChatFragment().apply {
-                arguments = Bundle().apply {
-                    putInt(ARG_COLUMN_COUNT, columnCount)
-                }
             }
+        //Getting Friends list from Database
+        FirebaseFirestore.getInstance().collection("users")
+            .document(FirebaseAuth.getInstance().currentUser!!.phoneNumber!!).collection("Friends")
+            .get().addOnSuccessListener {
+            Log.d("Received", it.size().toString())
+            for (document in it) {
+                val name = document.get("name")
+                val number = document.get("number")
+                Log.d("Received", "$name $number")
+                friend.add(Friend(number.toString(), name.toString()))
+                chatListAdapter.notifyDataSetChanged()
+            }
+        }
+
+        return view
     }
 
     @Deprecated("Deprecated in Java")
@@ -81,7 +72,7 @@ class ChatFragment : Fragment() {
         val cursor1: Cursor
         //get data from intent
         val uri = data!!.data
-        var detail: Array<String>? = null
+        val detail: Array<String>?
         //handle intent results || calls when user from Intent (Contact Pick) picks or cancels pick contact
         //calls when user click a contact from contacts (intent) list
         if (requestCode == 1 && resultCode == Activity.RESULT_OK) {
@@ -100,20 +91,44 @@ class ChatFragment : Fragment() {
                 )
             }
             val intent = Intent(context, ConversationActivity::class.java)
-            intent.putExtra("name", cursor1.getString(1))
-            intent.putExtra("number", trimPhoneNumber(cursor1.getString(0)))
+            val name = cursor1.getString(1)
+            val number = trimPhoneNumber(cursor1.getString(0))
+            val friend = Friend(number, name)
+            intent.putExtra("name", name)
+            intent.putExtra("number", number)
+            FirebaseFirestore.getInstance().collection("users")
+                .document(FirebaseAuth.getInstance().currentUser!!.phoneNumber!!)
+                .collection("Friends").document(trimPhoneNumber(cursor1.getString(0))).set(friend)
             startActivity(intent)
             cursor1.close()
         }
     }
-//function to trim phone number
+
+    //function to trim phone number
     private fun trimPhoneNumber(phoneNumber: String): String {
         var phoneNumber = phoneNumber.replace("[^0-9]".toRegex(), "")
-        if (phoneNumber.length == 10) {
-            phoneNumber = phoneNumber.replaceFirst("", "+91")
+        phoneNumber = if (phoneNumber.length == 10) {
+            phoneNumber.replaceFirst("", "+91")
         } else {
-            phoneNumber = phoneNumber.replaceFirst("", "+")
+            phoneNumber.replaceFirst("", "+")
         }
         return phoneNumber
+    }
+
+    private fun refreshFragment(context: Context) {
+        context.let {
+            val fragmentManager = (context as? AppCompatActivity)?.supportFragmentManager
+            fragmentManager?.let {
+                val currentFragment = fragmentManager.findFragmentById(R.id.viewpager)
+                currentFragment?.let {
+                    val fragmentTransaction = fragmentManager.beginTransaction()
+                    fragmentTransaction.detach(it)
+
+                    fragmentTransaction.attach(it)
+                    fragmentTransaction.commit()
+
+                }
+            }
+        }
     }
 }

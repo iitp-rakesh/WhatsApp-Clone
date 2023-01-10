@@ -1,4 +1,5 @@
 package com.android.application
+import android.content.Intent
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -11,9 +12,7 @@ import com.android.application.databinding.FragmentChatBinding
  * [RecyclerView.Adapter] that can display a [PlaceholderItem].
  * TODO: Replace the implementation with code for your data type.
  */
-class ChatFragmentRecyckerViewAdapter(
-    private val values: List<PlaceholderItem>
-) : RecyclerView.Adapter<ChatFragmentRecyckerViewAdapter.ViewHolder>() {
+class ChatFragmentRecyclerViewAdapter(private val userList:ArrayList<Friend>): RecyclerView.Adapter<ChatFragmentRecyclerViewAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 
@@ -24,24 +23,26 @@ class ChatFragmentRecyckerViewAdapter(
                 false
             )
         )
-
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = values[position]
-        holder.idView.text = item.id
-        holder.contentView.text = item.content
+            holder.contentView.text= userList[position].name
+        holder.bind(userList[position])
     }
 
-    override fun getItemCount(): Int = values.size
+    override fun getItemCount(): Int = userList.size
 
-    inner class ViewHolder(binding: FragmentChatBinding) : RecyclerView.ViewHolder(binding.root) {
-        val idView: TextView = binding.itemNumber
-        val contentView: TextView = binding.content
-
-        override fun toString(): String {
-            return super.toString() + " '" + contentView.text + "'"
+    class ViewHolder(binding: FragmentChatBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(friend: Friend) {
+            itemView.setOnClickListener {
+                val intent = Intent(itemView.context, ConversationActivity::class.java)
+                intent.putExtra("name", friend.name)
+                intent.putExtra("number", friend.number)
+                itemView.context.startActivity(intent)
+            }
         }
+
+        val contentView: TextView = binding.content
     }
 
 }

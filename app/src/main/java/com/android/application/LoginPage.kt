@@ -8,8 +8,6 @@ import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
-import com.android.application.MainActivity
-import com.android.application.R
 import com.google.firebase.FirebaseException
 import com.google.firebase.auth.*
 import java.util.concurrent.TimeUnit
@@ -86,11 +84,11 @@ class LoginPage : AppCompatActivity() {
                 if (TextUtils.isEmpty(etOTP.text.toString())) {
                     // if the OTP text field is empty display
                     // a message to user to enter OTP
-                    Toast.makeText(this, "Please enter OTP", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Please enter OTP", Toast.LENGTH_SHORT).show()
                 } else {
                     // if OTP field is not empty calling
                     // method to verify the OTP.
-                    verifyCode(etOTP.text.toString());
+                    verifyCode(etOTP.text.toString())
                 }
             }
         }
